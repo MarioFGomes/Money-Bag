@@ -73,4 +73,17 @@ button{
     align-items: center;
     justify-content:center;
 }
+
+.react-modal-close{
+    position: absolute;
+    right: 0.5rem;
+    top: 0.2rem;
+    border: 0;
+    background: transparent;
+    transition: filter 0.2s;
+
+    &:hover{
+        filter: brightness(0.9);
+    }
+}
 `
