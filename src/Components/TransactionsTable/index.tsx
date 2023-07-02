@@ -1,11 +1,21 @@
-import { useEffect } from 'react'
+import { useEffect,useState } from 'react'
 import {Container} from './style'
 import {api} from '../../services/api'
 
+
+interface Transaction{
+        id:number,
+        title:string,
+        categoria:string,
+        type:string,
+        valor:number,
+        createdAt:string,
+}
 export function TarnsictionTable(){
+    const [transactions,setTransactions]=useState<Transaction[]>([])
     useEffect(() =>{
         api.get('transactions')
-        .then(response => console.log(response.data));
+        .then(response => setTransactions(response.data.transactions));
     },[])
     
     
@@ -24,34 +34,27 @@ export function TarnsictionTable(){
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>Desenvolvimento de Software</td>
-                        <td className='deposito'>+20.000,00 kz</td>
-                        <td>Desenvolvimento</td>
-                        <td>25/06/2023</td>
+                {transactions.map(transaction =>(
+                    <tr key={transaction.id}>
+                        <td>{transaction.title}</td>
+                        <td className={transaction.type}>
+                            {
+                                new Intl.NumberFormat('pt-BR',{
+                                    style:'currency',
+                                    currency:'AKZ'
+                                }).format(transaction.valor)
+                            }
+                        </td>
+                        <td>{transaction.categoria}</td>
+                        <td>
+                            {
+                            new Intl.DateTimeFormat('pt-BR').format(
+                                new Date(transaction.createdAt)
+                            )
+                            }
+                            </td>
                     </tr>
-
-                    <tr>
-                        <td>Compra de Equipamento</td>
-                        <td className='despesa'>-20.000,00 kz</td>
-                        <td>Despesas</td>
-                        <td>25/06/2023</td>
-                    </tr>
-
-                    <tr>
-                        <td>Pagamento de Serviços</td>
-                        <td className='despesa'>-10.000,00 kz</td>
-                        <td>Serviços</td>
-                        <td>25/06/2023</td>
-                    </tr>
-
-                    <tr>
-                        <td>Consultoria</td>
-                        <td className='deposito'>+20.000,00 kz</td>
-                        <td>diversos</td>
-                        <td>25/06/2023</td>
-                    </tr>
-
+                ))}
 
                 </tbody>
             </table>

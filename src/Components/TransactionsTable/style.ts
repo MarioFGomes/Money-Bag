@@ -26,10 +26,10 @@ td{
     &:first-child{
         color:var(--text-title);
     }
-    &.deposito{
+    &.deposit{
         color:var(--green);
     }
-    &.despesa{
+    &.lifting{
         color:var(--red);
     }
 }
