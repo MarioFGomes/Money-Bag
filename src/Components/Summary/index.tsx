@@ -3,11 +3,26 @@ import entradas from '../../assets/entradas.svg'
 import saidas from '../../assets/saidas.svg'
 import total from '../../assets/total.svg'
 import { useContext } from 'react'
-import {TransactionContext} from '../../TransactionContext'
+import {useTransiction} from '../../hooks/TransactionContext'
 
 export function Summary(){
 
-    const data=useContext(TransactionContext);
+    const {transactions}=useTransiction();
+
+    const summary=transactions.reduce((acc,transaction)=>{
+        if(transaction.type==='deposit'){
+            acc.deposito+=transaction.valor;
+            acc.total+=transaction.valor;
+        }else{
+            acc.saques+=transaction.valor;
+            acc.total-=transaction.valor;
+        }
+        return acc;
+    },{
+        deposito:0,
+        saques:0,
+        total:0
+    })
 
     return (
         <Container>
@@ -16,7 +31,14 @@ export function Summary(){
                     <p>Entradas</p>
                     <img src={entradas} alt="entradas" />
                 </header>
-                <strong>kz 100.000,00</strong>
+                <strong>
+                {
+                    new Intl.NumberFormat('pt-BR',{
+                        style:'currency',
+                        currency:'AKZ'
+                    }).format(summary.deposito)
+                }
+                </strong>
             </div>
 
             <div>
@@ -24,7 +46,14 @@ export function Summary(){
                     <p>Saídas</p>
                     <img src={saidas} alt="saídas" />
                 </header>
-                <strong>kz -50.000,00</strong>
+                <strong>-
+                {
+                    new Intl.NumberFormat('pt-BR',{
+                        style:'currency',
+                        currency:'AKZ'
+                    }).format(summary.saques)
+                }
+                </strong>
             </div>
 
             <div>
@@ -32,7 +61,14 @@ export function Summary(){
                     <p>Total</p>
                     <img src={total} alt="total" />
                 </header>
-                <strong>kz 50.000,00</strong>
+                <strong>
+                {
+                    new Intl.NumberFormat('pt-BR',{
+                        style:'currency',
+                        currency:'AKZ'
+                    }).format(summary.total)
+                }
+                </strong>
             </div>
         </Container>
     )

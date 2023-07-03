@@ -5,7 +5,7 @@ import entrada from '../../assets/entradas.svg';
 import saida from '../../assets/saidas.svg';
 import logo from '../../assets/close.svg';
 import {api} from '../../services/api'
-import { TransactionContext } from '../../TransactionContext';
+import {useTransiction } from '../../hooks/TransactionContext';
 
 Modal.setAppElement('#root');
 
@@ -14,7 +14,7 @@ interface NewTransactionModalProps{
     onRequestClose:() => void;
 }
 export function NewTransactionModal({IsOpen,onRequestClose}:NewTransactionModalProps){
-const {createTransaction}=useContext(TransactionContext)
+const {createTransaction}=useTransiction();
 const [title,setTitle]=useState('');
 const [valor,setValor]=useState(0);
 const [categoria,setCategoria]=useState('');

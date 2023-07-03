@@ -1,10 +1,10 @@
 import { useContext } from 'react'
 import {Container} from './style'
-import {TransactionContext} from '../../TransactionContext'
+import { useTransiction } from '../../hooks/TransactionContext'
 
 
 export function TarnsictionTable(){
-   const {transactions}=useContext(TransactionContext)
+   const {transactions}=useTransiction();
     
     
     return (
