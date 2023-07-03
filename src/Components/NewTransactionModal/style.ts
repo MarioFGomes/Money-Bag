@@ -56,8 +56,8 @@ gap: 0.5rem;
 
 
 interface RadioBoxProps{
-    isActive:boolean;
-    activeColor:'green' | 'red';
+    isactive:boolean;
+    activecolor:'green' | 'red';
 }
 
 const colors={
@@ -74,7 +74,7 @@ export const RadioBox=styled.button<RadioBoxProps>`
     align-items: center;
     justify-content: center;
     transition: border-color 0.2s ease-out;
-    background: ${(props)=>props.isActive ? transparentize(0.9,colors[props.activeColor]) : 'transparent'} ;
+    background: ${(props)=>props.isactive ? transparentize(0.9,colors[props.activecolor]) : 'transparent'} ;
 
     &:hover{
         border-color:${darken(0.1,'#363F5F')}

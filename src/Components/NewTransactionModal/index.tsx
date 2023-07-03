@@ -1,10 +1,11 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { Container,TransationTypeContainer,RadioBox } from './style';
 import entrada from '../../assets/entradas.svg';
 import saida from '../../assets/saidas.svg';
 import logo from '../../assets/close.svg';
 import {api} from '../../services/api'
+import { TransactionContext } from '../../TransactionContext';
 
 Modal.setAppElement('#root');
 
@@ -13,21 +14,28 @@ interface NewTransactionModalProps{
     onRequestClose:() => void;
 }
 export function NewTransactionModal({IsOpen,onRequestClose}:NewTransactionModalProps){
+const {createTransaction}=useContext(TransactionContext)
 const [title,setTitle]=useState('');
 const [valor,setValor]=useState(0);
 const [categoria,setCategoria]=useState('');
 const [type, setType]=useState('deposit');
 
-  function handleNewCreateTransaction(event:FormEvent){
-    event.preventDefault();
-    const data={
+  async function handleNewCreateTransaction(event:FormEvent){
+    event.preventDefault()
+   
+    await createTransaction({
       title,
       valor,
       categoria,
       type
-    };
+    });
 
-    api.post('/transactions',data);
+    setTitle('');
+    setValor(0);
+    setCategoria('');
+    setType('deposit');
+    onRequestClose();
+
   }
 
     return (
@@ -61,8 +69,8 @@ const [type, setType]=useState('deposit');
                   <RadioBox 
                   type='button' 
                   onClick={()=>setType('deposit')}
-                  isActive={type === 'deposit'}
-                  activeColor='green'
+                  isactive={type === 'deposit'}
+                  activecolor='green'
                   >
                     <img src={entrada} alt="entradas" />
                     <span>Entrada</span>
@@ -71,8 +79,8 @@ const [type, setType]=useState('deposit');
                   <RadioBox 
                   type='button' 
                   onClick={()=>setType('lifting')}
-                  isActive={type === 'lifting'}
-                  activeColor='red'
+                  isactive={type === 'lifting'}
+                  activecolor='red'
                   >
                   <img src={saida} alt="saida" />
                   <span>Saida</span>
